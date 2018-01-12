@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 public class CMC {
 
@@ -20,6 +22,13 @@ public class CMC {
 		List<String> manaList = Arrays.asList(manaArray);
 		
 		for(String s: manaList) {
+
+			//is it a number, meaning it's colorless?
+			if(!Pattern.matches(".*\\D.*", s)) {
+				cmcMap.put("#", Integer.parseInt(s));
+				continue;
+			}
+			
 			if(cmcMap.containsKey(s)) {
 				//there is already mana of that color. add one more.
 				cmcMap.put(s, cmcMap.get(s) + 1);
@@ -30,4 +39,13 @@ public class CMC {
 		}
 	}
 	
+	int total() {
+		int total = 0;
+		
+		for(Integer i: cmcMap.values()) {
+			total += i;
+		}
+		
+		return total;
+	}	
 }
