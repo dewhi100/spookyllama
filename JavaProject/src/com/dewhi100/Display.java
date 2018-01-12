@@ -1,9 +1,9 @@
+package com.dewhi100;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Console;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -70,9 +70,7 @@ public class Display implements ActionListener {
 		String name = textInput.getText();
 		
 		MagicCardClient.getCardByName(name);
-
-		
-		
+	
 		System.out.println("Card cmc is: " + MagicCardClient.getCMC());
 		cmc.setText(MagicCardClient.getCMC());
 		System.out.println("Card text is: " + MagicCardClient.getText());

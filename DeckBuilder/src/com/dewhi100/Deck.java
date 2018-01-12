@@ -1,12 +1,8 @@
 package com.dewhi100;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import io.magicthegathering.javasdk.resource.Card;
-
-import org.apache.commons.lang3.StringUtils;
 
 public class Deck {
 
@@ -57,7 +53,7 @@ public class Deck {
 		return output; 
 	}
 		
-	CMC getDevotion(){
+	/*CMC getDevotion(){
 		CMC output = new CMC();
 		
 		for(Card c:deck) {
@@ -68,7 +64,7 @@ public class Deck {
 		}
 		
 		return output;
-	}
+	}*/
 	
 	int size() {
 		return deck.size();
