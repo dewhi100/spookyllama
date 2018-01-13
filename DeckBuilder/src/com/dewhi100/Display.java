@@ -6,45 +6,78 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class Display implements ActionListener {
 
-	JFrame frame;
+	JFrame mainFrame;
+	JComboBox<String> cardComboBox;
+	JButton addButton;
+	JButton deleteButton;
+	
+	JFrame pickerFrame;
 	JTextField textInput;
 	JTextArea cmc;
 	JTextArea desc;
 	JButton butt;
 	
+	private Deck deck;
+	
+	public Display() {
+		deck = new Deck();
+	}
+	
 	private static final float GOLD = (float) ((1 + Math.sqrt(5)) / 2);
+	
+	public void populateMainFrame() {
+		
+		mainFrame = new JFrame("Deck Buddy");
+		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		//display cards in the deck.
+		cardComboBox = new JComboBox<String>();
+		mainFrame.add(cardComboBox);
+		
+		//brings up the Shitty Gatherer, allowing you to add cards
+		addButton = new JButton("Add");
+		addButton.addActionListener(this);
+		mainFrame.add(addButton);
+		
+		//remove cards from the list.
+		deleteButton = new JButton("Add");
+		deleteButton.addActionListener(this);
+		mainFrame.add(deleteButton);
+		
+	}
 	
 	 public void createAndShowGUI() {
 	        //Create and set up the window.
-	        frame = new JFrame("HelloWorldCardMonger");
-	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        pickerFrame = new JFrame("HelloWorldCardMonger");
+	        pickerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	        //input field. specify card name
 	        textInput = new JTextField(20);
-	        frame.getContentPane().add(textInput);
+	        pickerFrame.getContentPane().add(textInput);
 	        
 	        //submission button
 	        butt = new JButton("Submit");
 	        butt.addActionListener(this);
-	        frame.getContentPane().add(butt);
+	        pickerFrame.getContentPane().add(butt);
 	        
 	        //cmc field. Showing converted mana cost
 	        cmc = new JTextArea("Mana here.");
 	        cmc.setLineWrap(true);
 	        cmc.setEditable(false);
-	        frame.getContentPane().add(cmc);	        
+	        pickerFrame.getContentPane().add(cmc);	        
 	        
 	        //output field. Showing card text
 	        desc = new JTextArea("Description here.");
 	        desc.setLineWrap(true);
 	        desc.setEditable(false);
-	        frame.getContentPane().add(desc);
+	        pickerFrame.getContentPane().add(desc);
 
 	        
 	        
@@ -56,12 +89,12 @@ public class Display implements ActionListener {
 	        int width = (int) (height * GOLD);
 
 	        // set the jframe height and width
-	        frame.setPreferredSize(new Dimension(width, height));
+	        pickerFrame.setPreferredSize(new Dimension(width, height));
 	        
 	        //Display the window.
-	        frame.pack();
-	        frame.setLayout(new FlowLayout());
-	        frame.setVisible(true);
+	        pickerFrame.pack();
+	        pickerFrame.setLayout(new FlowLayout());
+	        pickerFrame.setVisible(true);
 	    }
 
 	@Override
