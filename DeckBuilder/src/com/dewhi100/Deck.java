@@ -8,14 +8,45 @@ import java.util.Map.Entry;
 
 import io.magicthegathering.javasdk.resource.Card;
 
+import com.dewhi100.MagicCardClient;
+
 public class Deck {
 
 	private List<Card> deck;
 
-	Deck() {
+	public Deck() {
 		deck = new ArrayList<Card>();
 	}
 
+	public Deck(String input){
+		
+		if(input == null) {
+			return;
+		}
+		
+		deck = new ArrayList<Card>();
+
+		//break up the input by line
+		String[] lines = input.split(System.lineSeparator());
+		
+		for(String s:lines) {
+			//split line into quantity and name
+			int space = s.indexOf(" ");
+			String numberString = s.substring(0, space);
+			Integer number = Integer.parseInt(numberString);
+			System.out.println(number);
+			String cardName = s.substring(space + 1);
+			
+			//retrieve the card from the wizards
+			Card c = MagicCardClient.getCardByName(cardName);
+			
+			//add however many to the deck.
+			add(c, number);
+			System.out.println(getQuantity(c));
+
+		}	
+	}
+	
 	// Adding Cards
 
 	public void add(Card card, int quantity) {
@@ -25,9 +56,9 @@ public class Deck {
 		}
 
 		while (quantity > 0) {
+			deck.add(card);
 			quantity--;
 		}
-		deck.add(card);
 	}
 
 	public void add(Card card) {
@@ -83,7 +114,7 @@ public class Deck {
 		Map<String, Integer> cardQuantities = cardQuantities();
 
 		for (Entry<String, Integer> e : cardQuantities.entrySet()) {
-			output.add(e.getKey() + " x" + e.getValue());
+			output.add(e.getValue() + " " + e.getKey());
 		}
 
 		return output;
@@ -99,6 +130,16 @@ public class Deck {
 		return output;
 	}
 
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		
+		List<String> listing = listing();
+		
+		for(String s:listing) {
+			sb.append(s).append("\n");
+		}
+		return sb.toString();
+	}
 	/*
 	 * CMC getDevotion(){ CMC output = new CMC();
 	 * 

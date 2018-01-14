@@ -10,19 +10,32 @@ public class MagicCardClient {
 	private static Card currentCard;
 	
 	//Returns a Card if there is only one card matching the name. Otherwise returns null. Cest la vie!
-	static void getCardByName(String name) {
-		
-		Card output = null;
-		
+	static Card getCardByName(String name) {
+				
 		List<String> filters = new ArrayList<String>();
 		filters.add("name="+name);
 		
 		List<Card> cardList = CardAPI.getAllCards(filters);
 		
-		if(cardList.size() == 1) {
-			output = cardList.get(0);
+		if(cardList.isEmpty()) {
+			System.out.println("No cards found");
 		}
-		currentCard = output;
+		
+		int size = cardList.size();
+		
+		if(size >= 1) {
+			if(size > 1) {
+				System.out.println("Multiple cards retrieved.");
+/*				for(Card c:cardList) {
+					System.out.println("ID: " + c.getId());
+					System.out.println("Name: " + c.getName());
+					System.out.println("Text: " + c.getText());
+				}*/
+			}
+			currentCard = cardList.get(size -1);
+		}
+			
+		return currentCard;
 	}
 	
 	//returns the CMC of the stored card
