@@ -18,35 +18,35 @@ public class Deck {
 		deck = new ArrayList<Card>();
 	}
 
-	public Deck(String input){
-		
-		if(input == null) {
+	public Deck(String input) {
+
+		if (input == null) {
 			return;
 		}
-		
+
 		deck = new ArrayList<Card>();
 
-		//break up the input by line
+		// break up the input by line
 		String[] lines = input.split(System.lineSeparator());
-		
-		for(String s:lines) {
-			//split line into quantity and name
+
+		for (String s : lines) {
+			// split line into quantity and name
 			int space = s.indexOf(" ");
 			String numberString = s.substring(0, space);
 			Integer number = Integer.parseInt(numberString);
 			System.out.println(number);
 			String cardName = s.substring(space + 1);
-			
-			//retrieve the card from the wizards
+
+			// retrieve the card from the wizards
 			Card c = MagicCardClient.getCardByName(cardName);
-			
-			//add however many to the deck.
+
+			// add however many to the deck.
 			add(c, number);
 			System.out.println(getQuantity(c));
 
-		}	
+		}
 	}
-	
+
 	// Adding Cards
 
 	public void add(Card card, int quantity) {
@@ -132,24 +132,34 @@ public class Deck {
 
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		
+
 		List<String> listing = listing();
-		
-		for(String s:listing) {
+
+		for (String s : listing) {
 			sb.append(s).append("\n");
 		}
 		return sb.toString();
 	}
-	/*
-	 * CMC getDevotion(){ CMC output = new CMC();
-	 * 
-	 * for(Card c:deck) { String cmc = c.getManaCost();
-	 * 
-	 * 
-	 * 
-	 * }
-	 * 
-	 * return output; }
-	 */
 
+	public List<String> exportCMC() {
+		List<String> output = new ArrayList<String>();
+		for (Card c : deck) {
+			String manaCost = c.getManaCost();
+			if (manaCost != null) {
+				output.add(manaCost);
+			}
+		}
+		return output;
+	}
+	
+	public List<String> exportNames(){
+		List<String> output = new ArrayList<String>();
+		for (Card c : deck) {
+			String name = c.getManaCost();
+			if (name != null) {
+				output.add(name);
+			}
+		}
+		return output;
+	}
 }
