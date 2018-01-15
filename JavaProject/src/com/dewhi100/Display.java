@@ -10,6 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import io.magicthegathering.javasdk.resource.Card;
+
 public class Display implements ActionListener {
 
 	JFrame frame;
@@ -17,9 +19,9 @@ public class Display implements ActionListener {
 	JTextArea cmc;
 	JTextArea desc;
 	JButton butt;
-	
-	private static final float GOLD = (float) ((1 + Math.sqrt(5)) / 2);
-	
+	JTextArea manaSourceInformation;
+	JTextArea manaCostBreakdown;
+		
 	 public void createAndShowGUI() {
 	        //Create and set up the window.
 	        frame = new JFrame("HelloWorldCardMonger");
@@ -46,14 +48,25 @@ public class Display implements ActionListener {
 	        desc.setEditable(false);
 	        frame.getContentPane().add(desc);
 
+	        //output field. Showing card text
+	        manaSourceInformation = new JTextArea(10, 20);
+	        manaSourceInformation.setLineWrap(true);
+	        manaSourceInformation.setEditable(false);
+	        frame.getContentPane().add(manaSourceInformation);
+
+	        //output field. Showing card text
+	        manaCostBreakdown = new JTextArea(10, 20);
+	        manaCostBreakdown.setLineWrap(true);
+	        manaCostBreakdown.setEditable(false);
+	        frame.getContentPane().add(manaCostBreakdown);
 	        
 	        
 	        // get the screen size as a java dimension
 	        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 	        // get 2/3 of the height, and 2/3 of the width
-	        int height = screenSize.height * 1 / 4;
-	        int width = (int) (height * GOLD);
+	        int height = screenSize.height * 2 / 3;
+	        int width = screenSize.width / 2;
 
 	        // set the jframe height and width
 	        frame.setPreferredSize(new Dimension(width, height));
@@ -69,11 +82,16 @@ public class Display implements ActionListener {
 		
 		String name = textInput.getText();
 		
-		MagicCardClient.getCardByName(name);
-	
-		System.out.println("Card cmc is: " + MagicCardClient.getCMC());
+		Card c = MagicCardClient.getCardByName(name);
+		ManaSource ms = new ManaSource(c);
+		ManaCost mc = new ManaCost(c);
+		
+		manaSourceInformation.setText(ms.toString());
+		manaCostBreakdown.setText(mc.toString());
+		
+		//System.out.println("Card cmc is: " + MagicCardClient.getCMC());
 		cmc.setText(MagicCardClient.getCMC());
-		System.out.println("Card text is: " + MagicCardClient.getText());
+		//System.out.println("Card text is: " + MagicCardClient.getText());
 		desc.setText(MagicCardClient.getText());
 		
 	}

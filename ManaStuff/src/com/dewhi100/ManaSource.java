@@ -16,12 +16,12 @@ public class ManaSource {
 
 	public ManaSource(Card c) {
 		String text = c.getText();
-		setWhite(tapsFor("{W}", text));
-		setBlue(tapsFor("{U}", text));
-		setBlack(tapsFor("{B}", text));
-		setRed(tapsFor("{R}", text));
-		setGreen(tapsFor("{G}", text));
-		setColorless(tapsFor("{C}", text));
+		setWhite(tapsFor("W", text));
+		setBlue(tapsFor("U", text));
+		setBlack(tapsFor("B", text));
+		setRed(tapsFor("R", text));
+		setGreen(tapsFor("G", text));
+		setColorless(tapsFor("C", text));
 
 		//basic lands
 		switch (c.getName()) {
@@ -29,16 +29,16 @@ public class ManaSource {
 			setWhite(true);
 			break;
 		case "Island":
-			setWhite(true);
+			setBlue(true);
 			break;
 		case "Swamp":
-			setWhite(true);
+			setBlack(true);
 			break;
 		case "Mountain":
-			setWhite(true);
+			setRed(true);
 			break;
 		case "Forest":
-			setWhite(true);
+			setGreen(true);
 			break;
 		}
 		
@@ -46,7 +46,18 @@ public class ManaSource {
 	}
 
 	boolean tapsFor(String color, String text) {
-		return Pattern.matches("Add.*(" + color + "|one mana of any color).*to your mana pool", text);
+		if(text == null) {
+			return false;
+		}
+		
+		String noNewLinesText = text.replace(System.lineSeparator(), "");
+		
+		String regex = ".*Add.*(\\{" + color + "\\}|one mana of any color).*to your mana pool.*";
+		System.out.println(regex);
+		System.out.println(text);
+		boolean matches = Pattern.matches(regex, noNewLinesText);
+		System.out.println(matches);
+		return matches;
 	}
 	
 	public boolean isWhite() {
@@ -105,4 +116,17 @@ public class ManaSource {
 		this.isSource = isSource;
 	}
 
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		
+		sb.append("Mana source: ").append(isSource()).append("\n");
+		sb.append("Taps for white: ").append(white).append("\n");
+		sb.append("Taps for blue: ").append(blue).append("\n");
+		sb.append("Taps for black: ").append(black).append("\n");
+		sb.append("Taps for red: ").append(red).append("\n");
+		sb.append("Taps for green: ").append(green).append("\n");
+		sb.append("Taps for colorless: ").append(colorless);
+		
+		return sb.toString();
+	}
 }

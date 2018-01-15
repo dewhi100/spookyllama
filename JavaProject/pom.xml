@@ -11,6 +11,11 @@
 			<artifactId>javasdk</artifactId>
 			<version>0.0.6</version>
 		</dependency>
+		<dependency>
+			<groupId>com.dewhi100</groupId>
+			<artifactId>ManaStuff</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>

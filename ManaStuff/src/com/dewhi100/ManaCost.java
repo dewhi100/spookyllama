@@ -9,24 +9,27 @@ import io.magicthegathering.javasdk.resource.Card;
 
 public class ManaCost {
 
-	private int white;
-	private int blue;
-	private int black;
-	private int red;
-	private int green;
-	private int colorless;
-	private int total;
+	private int white = 0;
+	private int blue = 0;
+	private int black = 0;
+	private int red = 0;
+	private int green = 0;
+	private int colorless = 0;
+	private int total = 0;
 	
 	public ManaCost(Card c) {
 		String cmc = c.getManaCost();
 
+		if(cmc == null) {
+			return;
+		}
+		
 		setWhite(StringUtils.countMatches(cmc, "{W}"));
 		setBlue(StringUtils.countMatches(cmc, "{U}"));
 		setBlack(StringUtils.countMatches(cmc, "{B}"));
 		setRed(StringUtils.countMatches(cmc, "{R}"));
 		setGreen(StringUtils.countMatches(cmc, "{G}"));		
 		
-		setColorless(0);
 		Pattern p = Pattern.compile("[0-9]+");
 		Matcher m = p.matcher(cmc);
 		while (m.find()) {
@@ -92,4 +95,17 @@ public class ManaCost {
 		this.total = total;
 	}
 	
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		
+		sb.append("White Cost: ").append(white).append("\n");
+		sb.append("Blue Cost: ").append(blue).append("\n");
+		sb.append("Black Cost: ").append(black).append("\n");
+		sb.append("Red Cost: ").append(red).append("\n");
+		sb.append("Green Cost: ").append(green).append("\n");
+		sb.append("Colorless Cost: ").append(colorless).append("\n");
+		sb.append("Total Cost: ").append(total);
+		
+		return sb.toString();
+	}
 }
