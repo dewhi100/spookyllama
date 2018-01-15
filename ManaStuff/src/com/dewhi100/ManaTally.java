@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import io.magicthegathering.javasdk.resource.Card;
 
-public class ManaCost {
+public class ManaTally {
 
 	private int white = 0;
 	private int blue = 0;
@@ -17,7 +17,7 @@ public class ManaCost {
 	private int colorless = 0;
 	private int total = 0;
 	
-	public ManaCost(Card c) {
+	public ManaTally(Card c) {
 		String cmc = c.getManaCost();
 
 		if(cmc == null) {
@@ -40,7 +40,7 @@ public class ManaCost {
 	}
 
 	//Using Total for card total in this case.
-	public ManaCost(ManaSource ms) {
+	public ManaTally(ManaSource ms) {
 		setWhite(ms.isWhite() ? 1 : 0);
 		setBlue(ms.isBlue() ? 1 : 0);
 		setBlack(ms.isBlack() ? 1 : 0);
@@ -50,7 +50,7 @@ public class ManaCost {
 		setTotal(1);
 	}
 	
-	public ManaCost add(ManaCost mc) {
+	public ManaTally add(ManaTally mc) {
 		setWhite(white + mc.getWhite());
 		setBlue(blue + mc.getBlue());
 		setBlack(black + mc.getBlack());
@@ -63,7 +63,7 @@ public class ManaCost {
 	
 	//Use when totalling mana sources.
 	//Bad idea to add a source to a cost.
-	public ManaCost add(ManaSource ms) {
+	public ManaTally add(ManaSource ms) {
 		if(ms.isWhite()) {white++;}
 		if(ms.isBlue()) {blue++;}
 		if(ms.isBlack()) {black++;}

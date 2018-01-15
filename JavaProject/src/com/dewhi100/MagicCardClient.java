@@ -1,17 +1,27 @@
 package com.dewhi100;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.magicthegathering.javasdk.api.CardAPI;
 import io.magicthegathering.javasdk.resource.Card;
 
 public class MagicCardClient {
 
+	private static Map<String, Card> cardCache = new HashMap<String, Card>();
+	
 	private static Card currentCard;
 	
-	//Returns a Card if there is only one card matching the name. Otherwise returns null. Cest la vie!
+	//Looks in cache for cards, then asks the remote server.
+	//Uses the first card returned if multiple come back.
 	static Card getCardByName(String name) {
-				
+		
+		if(cardCache.containsKey(name)) {
+			currentCard = cardCache.get(name);
+			return currentCard;
+		}
+		
 		List<String> filters = new ArrayList<String>();
 		filters.add("name="+name);
 		
@@ -34,6 +44,8 @@ public class MagicCardClient {
 			}
 			currentCard = cardList.get(size -1);
 		}
+		
+		cardCache.put(name, currentCard);
 			
 		return currentCard;
 	}

@@ -53,10 +53,7 @@ public class ManaSource {
 		String noNewLinesText = text.replace(System.lineSeparator(), "");
 		
 		String regex = ".*Add.*(\\{" + color + "\\}|one mana of any color).*to your mana pool.*";
-		System.out.println(regex);
-		System.out.println(text);
 		boolean matches = Pattern.matches(regex, noNewLinesText);
-		System.out.println(matches);
 		return matches;
 	}
 	

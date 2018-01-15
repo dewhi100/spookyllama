@@ -22,9 +22,7 @@ public class Display implements ActionListener {
 	public Display() {
 		deck = new Deck();
 	}
-	
-	private static final float GOLD = (float) ((1 + Math.sqrt(5)) / 2);
-	
+		
 	public void populateMainFrame() {
 		
 		mainFrame = new JFrame("Deck Buddy");
@@ -39,15 +37,15 @@ public class Display implements ActionListener {
 		saveButton.addActionListener(this);
 		mainFrame.add(saveButton);
 		
-		//display mana source totals
-		sourcesTextArea = new JTextArea(20, 30);
-        sourcesTextArea.setEditable(false);
-		mainFrame.add(sourcesTextArea);
-		
 		//display devotion
 		devotionTextArea = new JTextArea(20, 30);
         devotionTextArea.setEditable(false);
 		mainFrame.add(devotionTextArea);
+		
+		//display mana source totals
+		sourcesTextArea = new JTextArea(20, 30);
+        sourcesTextArea.setEditable(false);
+		mainFrame.add(sourcesTextArea);
 		
         // get the screen size as a java dimension
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -72,16 +70,16 @@ public class Display implements ActionListener {
 		
 		deckListTextArea.setText(deck.toString());
 		
-		ManaCost sourceTotals = DeckAnalyst.calculateManaSourceCards(deck);
+		ManaTally sourceTotals = DeckAnalyst.calculateManaSourceCards(deck);
 		if(sourceTotals != null) {
-			sourcesTextArea.setText(sourceTotals.asManaSources());
+			sourcesTextArea.setText(DeckReporter.reportManaSources(sourceTotals));
 		}else {
 			sourcesTextArea.setText("");
 		}
 
-		ManaCost devotion = DeckAnalyst.calculateDevotion(deck);
+		ManaTally devotion = DeckAnalyst.calculateDevotion(deck);
 		if(devotion != null) {
-			devotionTextArea.setText(devotion.toString());
+			devotionTextArea.setText(DeckReporter.reportDevotion(devotion));
 		}else {
 			devotionTextArea.setText("");
 		}

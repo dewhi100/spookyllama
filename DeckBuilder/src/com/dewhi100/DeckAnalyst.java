@@ -4,23 +4,25 @@ import io.magicthegathering.javasdk.resource.Card;
 
 public class DeckAnalyst {
 
-	public static ManaCost calculateDevotion(Deck deck) {
+	private DeckAnalyst() {}
+	
+	public static ManaTally calculateDevotion(Deck deck) {
 		
-		ManaCost output = null;
+		ManaTally output = null;
 		
 		for(Card c:deck.getDeck()) {
 			if(output == null) {
-				output = new ManaCost(c);
+				output = new ManaTally(c);
 			}else {
-				output.add(new ManaCost(c));
+				output.add(new ManaTally(c));
 			}
 		}
 		
 		return output;
 	}
 	
-	public static ManaCost calculateManaSourceCards(Deck deck) {
-		ManaCost output = null;
+	public static ManaTally calculateManaSourceCards(Deck deck) {
+		ManaTally output = null;
 		
 		for(Card c:deck.getDeck()) {
 			ManaSource ms = new ManaSource(c);
@@ -28,7 +30,7 @@ public class DeckAnalyst {
 				continue;
 			}
 			if(output == null) {
-				output = new ManaCost(ms);
+				output = new ManaTally(ms);
 			}else {
 				output.add(ms);
 			}
@@ -36,4 +38,11 @@ public class DeckAnalyst {
 
 		return output;
 	}
+	
+	public static ManaTally calculateFetchLands(Deck deck) {
+		ManaTally output = null;
+				
+		return output;
+	}
+	
 }

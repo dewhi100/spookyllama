@@ -84,7 +84,7 @@ public class Display implements ActionListener {
 		
 		Card c = MagicCardClient.getCardByName(name);
 		ManaSource ms = new ManaSource(c);
-		ManaCost mc = new ManaCost(c);
+		ManaTally mc = new ManaTally(c);
 		
 		manaSourceInformation.setText(ms.toString());
 		manaCostBreakdown.setText(mc.toString());

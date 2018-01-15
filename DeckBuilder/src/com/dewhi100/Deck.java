@@ -34,7 +34,6 @@ public class Deck {
 			int space = s.indexOf(" ");
 			String numberString = s.substring(0, space);
 			Integer number = Integer.parseInt(numberString);
-			System.out.println(number);
 			String cardName = s.substring(space + 1);
 
 			// retrieve the card from the wizards
@@ -42,8 +41,6 @@ public class Deck {
 
 			// add however many to the deck.
 			add(c, number);
-			System.out.println(getQuantity(c));
-
 		}
 	}
 
