@@ -162,4 +162,8 @@ public class Deck {
 		}
 		return output;
 	}
+	
+	public List<Card> getDeck(){
+		return new ArrayList<Card>(deck);
+	}
 }

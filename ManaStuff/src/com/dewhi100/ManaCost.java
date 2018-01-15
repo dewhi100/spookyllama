@@ -39,6 +39,41 @@ public class ManaCost {
 		setTotal((int)c.getCmc());
 	}
 
+	//Using Total for card total in this case.
+	public ManaCost(ManaSource ms) {
+		setWhite(ms.isWhite() ? 1 : 0);
+		setBlue(ms.isBlue() ? 1 : 0);
+		setBlack(ms.isBlack() ? 1 : 0);
+		setRed(ms.isRed() ? 1 : 0);
+		setGreen(ms.isGreen() ? 1 : 0);
+		setColorless(ms.isColorless() ? 1 : 0);
+		setTotal(1);
+	}
+	
+	public ManaCost add(ManaCost mc) {
+		setWhite(white + mc.getWhite());
+		setBlue(blue + mc.getBlue());
+		setBlack(black + mc.getBlack());
+		setRed(red + mc.getRed());
+		setGreen(green + mc.getGreen());
+		setColorless(colorless + mc.getColorless());
+		setTotal(total + mc.getTotal());
+		return this;
+	}
+	
+	//Use when totalling mana sources.
+	//Bad idea to add a source to a cost.
+	public ManaCost add(ManaSource ms) {
+		if(ms.isWhite()) {white++;}
+		if(ms.isBlue()) {blue++;}
+		if(ms.isBlack()) {black++;}
+		if(ms.isRed()) {red++;}
+		if(ms.isGreen()) {green++;}
+		if(ms.isColorless()) {colorless++;}
+		total++;
+		return this;
+	}
+	
 	public int getWhite() {
 		return white;
 	}
@@ -105,6 +140,20 @@ public class ManaCost {
 		sb.append("Green Cost: ").append(green).append("\n");
 		sb.append("Colorless Cost: ").append(colorless).append("\n");
 		sb.append("Total Cost: ").append(total);
+		
+		return sb.toString();
+	}
+	
+	public String asManaSources() {
+		StringBuffer sb = new StringBuffer();
+
+		sb.append("White sources: ").append(white).append("\n");
+		sb.append("Blue sources: ").append(blue).append("\n");
+		sb.append("Black sources: ").append(black).append("\n");
+		sb.append("Red sources: ").append(red).append("\n");
+		sb.append("Green sources: ").append(green).append("\n");
+		sb.append("Colorless sources: ").append(colorless).append("\n");
+		sb.append("Total sources: ").append(total);
 		
 		return sb.toString();
 	}

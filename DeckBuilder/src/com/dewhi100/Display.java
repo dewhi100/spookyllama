@@ -14,6 +14,8 @@ public class Display implements ActionListener {
 	JFrame mainFrame;
 	JTextArea deckListTextArea;
 	JButton saveButton;
+	JTextArea sourcesTextArea;
+	JTextArea devotionTextArea;
 	
 	private Deck deck;
 	
@@ -37,13 +39,23 @@ public class Display implements ActionListener {
 		saveButton.addActionListener(this);
 		mainFrame.add(saveButton);
 		
+		//display mana source totals
+		sourcesTextArea = new JTextArea(20, 30);
+        sourcesTextArea.setEditable(false);
+		mainFrame.add(sourcesTextArea);
+		
+		//display devotion
+		devotionTextArea = new JTextArea(20, 30);
+        devotionTextArea.setEditable(false);
+		mainFrame.add(devotionTextArea);
+		
         // get the screen size as a java dimension
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         // get 2/3 of the height, and 2/3 of the width
         int height = screenSize.height * 3 / 5;
-        int width = (int) (height / GOLD);
-
+        int width = height * 7 / 3;
+       
         // set the jframe height and width
         mainFrame.setPreferredSize(new Dimension(width, height));
         
@@ -60,17 +72,20 @@ public class Display implements ActionListener {
 		
 		deckListTextArea.setText(deck.toString());
 		
-		/*
-		String name = textInput.getText();
-		
-		MagicCardClient.getCardByName(name);
-	
-		System.out.println("Card cmc is: " + MagicCardClient.getCMC());
-		cmc.setText(MagicCardClient.getCMC());
-		System.out.println("Card text is: " + MagicCardClient.getText());
-		desc.setText(MagicCardClient.getText());
-		*/
-	}
+		ManaCost sourceTotals = DeckAnalyst.calculateManaSourceCards(deck);
+		if(sourceTotals != null) {
+			sourcesTextArea.setText(sourceTotals.asManaSources());
+		}else {
+			sourcesTextArea.setText("");
+		}
+
+		ManaCost devotion = DeckAnalyst.calculateDevotion(deck);
+		if(devotion != null) {
+			devotionTextArea.setText(devotion.toString());
+		}else {
+			devotionTextArea.setText("");
+		}
+}
 
 	 
 	 
