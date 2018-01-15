@@ -12,9 +12,9 @@ public class DeckAnalyst {
 		
 		for(Card c:deck.getDeck()) {
 			if(output == null) {
-				output = new ManaTally(c);
+				output = ManaTally.asManaCost(c);
 			}else {
-				output.add(new ManaTally(c));
+				output.add(ManaTally.asManaCost(c));
 			}
 		}
 		
@@ -25,14 +25,14 @@ public class DeckAnalyst {
 		ManaTally output = null;
 		
 		for(Card c:deck.getDeck()) {
-			ManaSource ms = new ManaSource(c);
-			if(!ms.isSource()) {
+			ManaTally mt = ManaTally.asManaSource(c);
+			if(mt.getTotal() <= 0) {
 				continue;
 			}
 			if(output == null) {
-				output = new ManaTally(ms);
+				output = mt;
 			}else {
-				output.add(ms);
+				output.add(mt);
 			}
 		}
 

@@ -40,7 +40,9 @@ public class Deck {
 			Card c = MagicCardClient.getCardByName(cardName);
 
 			// add however many to the deck.
-			add(c, number);
+			if(c != null) {
+				add(c, number);
+			}
 		}
 	}
 
@@ -59,6 +61,9 @@ public class Deck {
 	}
 
 	public void add(Card card) {
+		if(card == null) {
+			return;
+		}
 		add(card, 1);
 	}
 

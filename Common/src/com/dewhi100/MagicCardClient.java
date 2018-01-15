@@ -26,27 +26,26 @@ public class MagicCardClient {
 		filters.add("name="+name);
 		
 		List<Card> cardList = CardAPI.getAllCards(filters);
-		
-		if(cardList.isEmpty()) {
-			System.out.println("No cards found");
-		}
-		
+				
 		int size = cardList.size();
 		
 		if(size >= 1) {
 			if(size > 1) {
 				System.out.println("Multiple cards retrieved.");
-/*				for(Card c:cardList) {
-					System.out.println("ID: " + c.getId());
-					System.out.println("Name: " + c.getName());
-					System.out.println("Text: " + c.getText());
-				}*/
 			}
 			currentCard = cardList.get(size -1);
+		}else {
+			System.out.println("No cards found");
+			return null;
 		}
 		
-		cardCache.put(name, currentCard);
-			
+		String cardName = currentCard.getName();
+		//if they didnt search with the exact card name, it will also be stored by their search term.
+		if(cardName != name) {
+			cardCache.put(name, currentCard);			
+		}
+		cardCache.put(cardName, currentCard);						
+		
 		return currentCard;
 	}
 	

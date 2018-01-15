@@ -13,7 +13,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.dewhi100</groupId>
-			<artifactId>ManaStuff</artifactId>
+			<artifactId>Common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
