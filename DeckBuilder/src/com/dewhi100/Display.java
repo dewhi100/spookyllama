@@ -14,8 +14,7 @@ public class Display implements ActionListener {
 	JFrame mainFrame;
 	JTextArea deckListTextArea;
 	JButton saveButton;
-	JTextArea sourcesTextArea;
-	JTextArea devotionTextArea;
+	JTextArea analysisArea;
 	
 	private Deck deck;
 	
@@ -36,16 +35,11 @@ public class Display implements ActionListener {
 		saveButton = new JButton("Save");
 		saveButton.addActionListener(this);
 		mainFrame.add(saveButton);
-		
-		//display devotion
-		devotionTextArea = new JTextArea(20, 30);
-        devotionTextArea.setEditable(false);
-		mainFrame.add(devotionTextArea);
-		
-		//display mana source totals
-		sourcesTextArea = new JTextArea(20, 30);
-        sourcesTextArea.setEditable(false);
-		mainFrame.add(sourcesTextArea);
+				
+		//display analysis
+		analysisArea = new JTextArea(20, 30);
+        analysisArea.setEditable(false);
+		mainFrame.add(analysisArea);
 		
         // get the screen size as a java dimension
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -70,19 +64,36 @@ public class Display implements ActionListener {
 		
 		deckListTextArea.setText(deck.toString());
 		
+		String feedbackString = "";
+		
 		ManaTally sourceTotals = DeckAnalyst.calculateManaSourceCards(deck);
 		if(sourceTotals != null) {
-			sourcesTextArea.setText(DeckReporter.reportManaSources(sourceTotals));
+			feedbackString += DeckReporter.reportManaSources(sourceTotals);
+			feedbackString += "\n";
+//			sourcesTextArea.setText();
 		}else {
-			sourcesTextArea.setText("");
+//			sourcesTextArea.setText("");
 		}
 
 		ManaTally devotion = DeckAnalyst.calculateDevotion(deck);
 		if(devotion != null) {
-			devotionTextArea.setText(DeckReporter.reportDevotion(devotion));
+			feedbackString += DeckReporter.reportDevotion(devotion);
+			feedbackString += "\n";
+//			devotionTextArea.setText();
 		}else {
-			devotionTextArea.setText("");
+//			devotionTextArea.setText("");
 		}
+		
+		ManaTally fetchLands = DeckAnalyst.calculateFetchLands(deck);
+		if(devotion != null) {
+			feedbackString += DeckReporter.reportFetchLands(fetchLands);
+			feedbackString += "\n";
+//			devotionTextArea.setText();
+		}else {
+//			devotionTextArea.setText("");
+		}
+		analysisArea.setText(feedbackString);
+		
 }
 
 	 

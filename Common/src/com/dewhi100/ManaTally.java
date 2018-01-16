@@ -1,5 +1,7 @@
 package com.dewhi100;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,6 +22,43 @@ public class ManaTally {
 	private ManaTally() {
 	}
 
+	// totat # of cards that can pull plains, islands, etc. from the deck.
+	// distinct from sorceries such as rampant growth
+	public static ManaTally asFetchLand(Card c) {
+		ManaTally output = new ManaTally();
+		List<String> types = Arrays.asList(c.getTypes());
+		if(types.contains("Land")) {
+			String text = c.getText();
+			if(fetches(Constants.PLAINS + "|basic land", text)) {
+				output.setWhite(1);
+				output.setTotal(1);
+			}
+			if(fetches(Constants.ISLAND + "|basic land", text)) {
+				output.setBlue(1);
+				output.setTotal(1);
+			}
+			if(fetches(Constants.SWAMP + "|basic land", text)) {
+				output.setBlack(1);
+				output.setTotal(1);
+			}
+			if(fetches(Constants.MOUNTAIN + "|basic land", text)) {
+				output.setRed(1);
+				output.setTotal(1);
+			}
+			if(fetches(Constants.FOREST + "|basic land", text)) {
+				output.setGreen(1);
+				output.setTotal(1);
+			}
+			//If any land can be fetched.
+			if(fetches("(^((?!basic).)*land)", text)) {
+				output.setColorless(1);
+				output.setTotal(1);
+			}
+		}
+		return output;
+	}
+
+	// parse the CMC. works with vanilla colors and colorless. Others are buggy.
 	public static ManaTally asManaCost(Card c) {
 		ManaTally mt = new ManaTally();
 
@@ -46,6 +85,7 @@ public class ManaTally {
 		return mt;
 	}
 
+	// any card that lets you add mana to your pool.
 	public static ManaTally asManaSource(Card c) {
 		ManaTally mt = new ManaTally();
 
@@ -79,11 +119,22 @@ public class ManaTally {
 		if (mt.getWhite() > 0 || mt.getBlue() > 0 || mt.getBlack() > 0 || mt.getRed() > 0 || mt.getGreen() > 0
 				|| mt.getColorless() > 0) {
 			mt.setTotal(1);
-		}else {
+		} else {
 			mt.setTotal(0);
 		}
 
 		return mt;
+	}
+
+	public ManaTally add(ManaTally mt) {
+		setWhite(white + mt.getWhite());
+		setBlue(blue + mt.getBlue());
+		setBlack(black + mt.getBlack());
+		setRed(red + mt.getRed());
+		setGreen(green + mt.getGreen());
+		setColorless(colorless + mt.getColorless());
+		setTotal(total + mt.getTotal());
+		return this;
 	}
 
 	static boolean tapsFor(String color, String text) {
@@ -98,15 +149,15 @@ public class ManaTally {
 		return matches;
 	}
 
-	public ManaTally add(ManaTally mc) {
-		setWhite(white + mc.getWhite());
-		setBlue(blue + mc.getBlue());
-		setBlack(black + mc.getBlack());
-		setRed(red + mc.getRed());
-		setGreen(green + mc.getGreen());
-		setColorless(colorless + mc.getColorless());
-		setTotal(total + mc.getTotal());
-		return this;
+	static boolean fetches(String color, String text) {
+		if (text == null) {
+			return false;
+		}
+		String noNewLinesText = text.replace(System.lineSeparator(), "");
+
+		String regex = ".*Search your library for.*(" + color + ").*put (it|them) onto the battlefield.*";
+		boolean matches = Pattern.matches(regex, noNewLinesText);
+		return matches;
 	}
 
 	public int getWhite() {

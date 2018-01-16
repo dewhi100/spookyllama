@@ -8,9 +8,10 @@ public class DeckReporter {
 	
 	public static String reportDevotion(ManaTally mc) {
 		if(mc == null) {
-			return "Invalid Mana Cost";
+			return "Invalid Mana Cost\n";
 		}		
 		int total = mc.getTotal() - mc.getColorless();
+		
 		if(total < 1) {
 			return "No colored spells in this deck.\n";
 		}
@@ -32,14 +33,15 @@ public class DeckReporter {
 
 	public static String reportManaSources(ManaTally mc) {
 		if(mc == null) {
-			return "Invalid Mana Cost";
-		}
-		
-		if(mc.getTotal() < 1) {
-			return "No mana sources in this deck!";
+			return "Invalid Mana Cost\n";
 		}
 		
 		int total = mc.getTotal();
+
+		if(total < 1) {
+			return "No mana sources in this deck!\n";
+		}
+		
 		StringBuffer sb = new StringBuffer("Mana Sources: \n");
 		
 		appendIfNonZero(mc.getWhite(), total, "White", sb);
@@ -48,6 +50,30 @@ public class DeckReporter {
 		appendIfNonZero(mc.getRed(), total, "Red", sb);
 		appendIfNonZero(mc.getGreen(), total, "Green", sb);
 		appendIfNonZero(mc.getColorless(), total, "Colorless", sb);
+		
+		return sb.toString();
+	}
+	
+	public static String reportFetchLands(ManaTally mt) {
+		if(mt == null) {
+			return "Invalid Fetch Lands Tally\n";
+		}
+		
+		int total = mt.getTotal();
+
+		if(total < 1) {
+			return "No fetch lands in this deck!";
+		}
+		
+		StringBuffer sb = new StringBuffer("Fetch Lands: \n");
+		
+		sb.append(Constants.PLAINS).append(": ").append(mt.getWhite()).append("\n");
+		sb.append(Constants.ISLAND).append("s: ").append(mt.getBlue()).append("\n");
+		sb.append(Constants.SWAMP).append("s: ").append(mt.getBlack()).append("\n");
+		sb.append(Constants.MOUNTAIN).append("s: ").append(mt.getRed()).append("\n");
+		sb.append(Constants.FOREST).append("s: ").append(mt.getGreen()).append("\n");
+		sb.append("Any land: ").append(mt.getColorless()).append("\n");
+		sb.append("Total: ").append(total).append("\n");
 		
 		return sb.toString();
 	}

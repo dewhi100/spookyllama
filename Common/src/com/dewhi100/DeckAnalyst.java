@@ -41,7 +41,19 @@ public class DeckAnalyst {
 	
 	public static ManaTally calculateFetchLands(Deck deck) {
 		ManaTally output = null;
-				
+		
+		for(Card c:deck.getDeck()) {
+			ManaTally mt = ManaTally.asFetchLand(c);
+			if(mt.getTotal() <= 0) {
+				continue;
+			}
+			if(output == null) {
+				output = mt;
+			}else {
+				output.add(mt);
+			}
+		}
+		
 		return output;
 	}
 	

@@ -1,5 +1,7 @@
 package com.dewhi100;
 
+import com.google.common.collect.ImmutableList;
+
 public class Constants {
 
 	//Basic mana
@@ -24,5 +26,13 @@ public class Constants {
 	
 	//Variable Cost Mana
 	public static final String VARIABLE = "{X}";
+	
+	//Lands
+	public static final ImmutableList<String> LANDS = ImmutableList.of("Plains","Island","Swamp","Mountain","Forest");
+	public static final String PLAINS = "Plains";
+	public static final String ISLAND = "Island";
+	public static final String SWAMP = "Swamp";
+	public static final String MOUNTAIN = "Mountain";
+	public static final String FOREST = "Forest";
 	
 }
