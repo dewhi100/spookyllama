@@ -32,8 +32,20 @@ public class MagicCardClient {
 		if(size >= 1) {
 			if(size > 1) {
 				System.out.println("Multiple cards retrieved.");
+				currentCard = null;
+				for(Card c:cardList) {
+					if(c.getName().equalsIgnoreCase(name)) {
+						System.out.println("Exact match found.");
+						currentCard = c;
+					}
+				}
+				if(currentCard == null) {
+					System.out.println("No exact match found.");
+					currentCard = cardList.get(cardList.size() - 1); 
+				}
+			}else {
+				currentCard = cardList.get(cardList.size() - 1); 				
 			}
-			currentCard = cardList.get(size -1);
 		}else {
 			System.out.println("No cards found");
 			return null;
