@@ -49,7 +49,7 @@ public class DeckReporter {
 		appendIfNonZero(mc.getBlack(), total, "Black", sb);
 		appendIfNonZero(mc.getRed(), total, "Red", sb);
 		appendIfNonZero(mc.getGreen(), total, "Green", sb);
-		appendIfNonZero(mc.getColorless(), total, "Colorless", sb);
+		appendIfNonZero(mc.getColorless(), total, "Colorless Only", sb);
 		
 		return sb.toString();
 	}

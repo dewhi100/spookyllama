@@ -116,11 +116,15 @@ public class ManaTally {
 			break;
 		}
 
-		if (mt.getWhite() > 0 || mt.getBlue() > 0 || mt.getBlack() > 0 || mt.getRed() > 0 || mt.getGreen() > 0
-				|| mt.getColorless() > 0) {
-			mt.setTotal(1);
-		} else {
-			mt.setTotal(0);
+		if (mt.getWhite() > 0 || mt.getBlue() > 0 || mt.getBlack() > 0 || mt.getRed() > 0 || mt.getGreen() > 0) {
+			mt.setColorless(0);
+			mt.setTotal(1);			
+		}else {
+			if(mt.getColorless() > 0) {
+				mt.setTotal(1);				
+			} else {
+				mt.setTotal(0);
+			}
 		}
 
 		return mt;
