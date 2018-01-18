@@ -2,7 +2,6 @@ package com.dewhi100;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +24,9 @@ public class ManaTally {
 	// totat # of cards that can pull plains, islands, etc. from the deck.
 	// distinct from sorceries such as rampant growth
 	public static ManaTally asFetchLand(Card c) {
+		if(c == null) {
+			return null;
+		}
 		ManaTally output = new ManaTally();
 		List<String> types = Arrays.asList(c.getTypes());
 		if(types.contains("Land")) {
@@ -60,6 +62,9 @@ public class ManaTally {
 
 	// parse the CMC. works with vanilla colors and colorless. Others are buggy.
 	public static ManaTally asManaCost(Card c) {
+		if(c == null) {
+			return null;
+		}
 		ManaTally mt = new ManaTally();
 
 		String cmc = c.getManaCost();
@@ -73,13 +78,7 @@ public class ManaTally {
 		mt.setBlack(StringUtils.countMatches(cmc, "{B}"));
 		mt.setRed(StringUtils.countMatches(cmc, "{R}"));
 		mt.setGreen(StringUtils.countMatches(cmc, "{G}"));
-
-		Pattern p = Pattern.compile("[0-9]+");
-		Matcher m = p.matcher(cmc);
-		while (m.find()) {
-			mt.setColorless(Integer.parseInt(m.group()));
-		}
-
+		mt.setColorless(StringUtils.countMatches(cmc, "{C}"));
 		mt.setTotal((int) c.getCmc());
 
 		return mt;
@@ -87,6 +86,9 @@ public class ManaTally {
 
 	// any card that lets you add mana to your pool.
 	public static ManaTally asManaSource(Card c) {
+		if(c == null) {
+			return null;
+		}
 		ManaTally mt = new ManaTally();
 
 		String text = c.getText();
@@ -95,7 +97,7 @@ public class ManaTally {
 		mt.setBlack(tapsFor("B", text) ? 1 : 0);
 		mt.setRed(tapsFor("R", text) ? 1 : 0);
 		mt.setGreen(tapsFor("G", text) ? 1 : 0);
-		mt.setColorless(tapsFor("C", text) ? 1 : 0);
+		mt.setColorless(tapsForColorless(text) ? 1 : 0);
 
 		// basic lands
 		switch (c.getName()) {
@@ -149,6 +151,19 @@ public class ManaTally {
 		return matches;
 	}
 
+	static boolean tapsForColorless(String text) {
+		if (text == null) {
+			return false;
+		}
+
+		String noNewLinesText = text.replace(System.lineSeparator(), "");
+
+		String regex = ".*Add.*\\{C\\}.*to your mana pool.*";
+		boolean matches = Pattern.matches(regex, noNewLinesText);
+		return matches;
+
+	}
+	
 	static boolean fetches(String color, String text) {
 		if (text == null) {
 			return false;
@@ -214,5 +229,13 @@ public class ManaTally {
 
 	private void setTotal(int total) {
 		this.total = total;
+	}
+	
+	public int getGeneric() {
+		return total - white - blue - black - red - green - colorless;
+	}
+	
+	public int getNonGeneric() {
+		return white + blue + black + red + green + colorless;
 	}
 }

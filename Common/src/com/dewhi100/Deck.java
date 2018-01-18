@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 import io.magicthegathering.javasdk.resource.Card;
 
@@ -18,21 +19,32 @@ public class Deck {
 		deck = new ArrayList<Card>();
 	}
 
+	private int dualCards;
+	
 	public Deck(String input) {
 
 		if (input == null) {
 			return;
 		}
 
+		dualCards = 0;
+		
 		deck = new ArrayList<Card>();
 
 		// break up the input by line
 		String[] lines = input.split(System.lineSeparator());
 
 		for (String s : lines) {
+			if(Pattern.matches("(Total: \\d+)|\\s*", s)) {
+				continue;
+			}
+			if(!Pattern.matches("\\d+.*", s)) {
+				add(MagicCardClient.getCardByName(s));
+				continue;
+			}
 			// split line into quantity and name
 			int space = s.indexOf(" ");
-			String numberString = s.substring(0, space);
+			String numberString = s.substring(0, space).replaceAll("\\D", "");
 			Integer number = Integer.parseInt(numberString);
 			String cardName = s.substring(space + 1);
 
@@ -54,8 +66,15 @@ public class Deck {
 			return;
 		}
 
-		while (quantity > 0) {
-			deck.add(card);
+		while (quantity > 0) {			
+			if(CardUtil.checkIsPrimary(card)) {
+				deck.add(card);
+				Card mate = MagicCardClient.getCardByMate(card);
+				deck.add(mate);
+				dualCards++;				
+			}else if(!CardUtil.checkIsDualCard(card)) {
+				deck.add(card);				
+			}
 			quantity--;
 		}
 	}
@@ -67,11 +86,19 @@ public class Deck {
 		add(card, 1);
 	}
 
+	// Taking Cards away
+
 	public void remove(Card card, int quantity) {
 		int toRemove = quantity;
 
 		for (Card c : deck) {
-			if (toRemove > 0 && (c.getName() == card.getName())) {
+			String cName = c.getName();
+			if (toRemove > 0 && (cName == card.getName())) {
+				Card mate = MagicCardClient.getCardByMate(c);
+				if(cName != mate.getName()) {
+					deck.remove(mate);
+					dualCards--;
+				}
 				deck.remove(c);
 				toRemove--;
 			}
@@ -79,8 +106,6 @@ public class Deck {
 				break;
 		}
 	}
-
-	// Taking Cards away
 
 	public void remove(Card c) {
 		remove(c, 1);
@@ -97,7 +122,7 @@ public class Deck {
 	// Statistics and Reporting
 
 	public int size() {
-		return deck.size();
+		return deck.size() - dualCards;
 	}
 
 	public int getQuantity(Card card) {
@@ -140,6 +165,9 @@ public class Deck {
 		for (String s : listing) {
 			sb.append(s).append("\n");
 		}
+		
+		sb.append("\n\nTotal: ").append(size()).append("\n");
+		
 		return sb.toString();
 	}
 

@@ -10,24 +10,38 @@ public class DeckReporter {
 		if(mc == null) {
 			return "Invalid Mana Cost\n";
 		}		
-		int total = mc.getTotal() - mc.getColorless();
+		int total = mc.getTotal();
 		
 		if(total < 1) {
-			return "No colored spells in this deck.\n";
+			return "No non-generic mana spells in this deck.\n";
 		}
 		int white = mc.getWhite();
 		int blue = mc.getBlue();
 		int black = mc.getBlack();
 		int red = mc.getRed();
 		int green = mc.getGreen();
-		StringBuffer sb = new StringBuffer("Devotion:\n");
+		int colorless= mc.getColorless();
+		StringBuffer sb = new StringBuffer("Percentage of total mana costs:\n");
 
 		appendIfNonZero(white, total, "White", sb);
 		appendIfNonZero(blue, total, "Blue", sb);
 		appendIfNonZero(black, total, "Black", sb);
 		appendIfNonZero(red, total, "Red", sb);
 		appendIfNonZero(green, total, "Green", sb);
+		appendIfNonZero(colorless, total, "Colorless", sb);
+		appendIfNonZero(mc.getGeneric(), total, "Generic", sb);
+				
+		int nonGenericTotal = mc.getNonGeneric();
 		
+		sb.append("\nPercentage of non-generic mana costs:\n");
+
+		appendIfNonZero(white, nonGenericTotal, "White", sb);
+		appendIfNonZero(blue, nonGenericTotal, "Blue", sb);
+		appendIfNonZero(black, nonGenericTotal, "Black", sb);
+		appendIfNonZero(red, nonGenericTotal, "Red", sb);
+		appendIfNonZero(green, nonGenericTotal, "Green", sb);
+		appendIfNonZero(colorless, nonGenericTotal, "Colorless", sb);
+
 		return sb.toString();
 	}
 
@@ -49,14 +63,14 @@ public class DeckReporter {
 		appendIfNonZero(mc.getBlack(), total, "Black", sb);
 		appendIfNonZero(mc.getRed(), total, "Red", sb);
 		appendIfNonZero(mc.getGreen(), total, "Green", sb);
-		appendIfNonZero(mc.getColorless(), total, "Colorless Only", sb);
+		appendIfNonZero(mc.getColorless(), total, "Colorless", sb);
 		
 		return sb.toString();
 	}
 	
 	public static String reportFetchLands(ManaTally mt) {
 		if(mt == null) {
-			return "Invalid Fetch Lands Tally\n";
+			return "No fetch lands in this deck!";
 		}
 		
 		int total = mt.getTotal();

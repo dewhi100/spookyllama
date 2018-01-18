@@ -26,9 +26,9 @@ public class DeckAnalyst {
 		
 		for(Card c:deck.getDeck()) {
 			ManaTally mt = ManaTally.asManaSource(c);
-			if(mt.getTotal() <= 0) {
-				continue;
-			}
+//			if(mt.getTotal() <= 0) {
+//				continue;
+//			}
 			if(output == null) {
 				output = mt;
 			}else {

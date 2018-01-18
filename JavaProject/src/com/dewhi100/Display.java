@@ -83,6 +83,8 @@ public class Display implements ActionListener {
 		String name = textInput.getText();
 		
 		Card c = MagicCardClient.getCardByName(name);
+//		c = MagicCardClient.getCardByMate(c);
+		
 		ManaTally ms = ManaTally.asManaSource(c);
 		ManaTally mc = ManaTally.asManaCost(c);
 		
@@ -90,9 +92,9 @@ public class Display implements ActionListener {
 		manaCostBreakdown.setText(DeckReporter.reportDevotion(mc));
 		
 		//System.out.println("Card cmc is: " + MagicCardClient.getCMC());
-		cmc.setText(MagicCardClient.getCMC());
+		cmc.setText(c.getManaCost());
 		//System.out.println("Card text is: " + MagicCardClient.getText());
-		desc.setText(MagicCardClient.getText());
+		desc.setText(c.getText());
 		
 	}
 }
