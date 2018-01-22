@@ -92,10 +92,21 @@ public class DeckReporter {
 		return sb.toString();
 	}
 	
+	public static String reportOddsOfDrawing(String originalRequest, Double d) {
+		StringBuffer sb = new StringBuffer(originalRequest).append("\n");
+		sb.append("Odds: ").append(doubleToString(d)).append("\n");
+		return sb.toString();
+	}
+	
 	private static void appendIfNonZero(int part, int whole, String color, StringBuffer sb) {
 		if(part > 0) {
 			sb.append(color).append(": ").append(percent(part, whole)).append("\n");
 		}
+	}
+	
+	private static String doubleToString(Double percentage) {
+		DecimalFormat df = new DecimalFormat("#.##");
+		return df.format(percentage) + "%";		
 	}
 	
 	private static String percent(int part, int whole) {
@@ -103,5 +114,7 @@ public class DeckReporter {
 		DecimalFormat df = new DecimalFormat("#.##");
 		return df.format(percentage) + "%";
 	}
+	
+	
 	
 }

@@ -10,6 +10,8 @@ import java.util.regex.Pattern;
 import io.magicthegathering.javasdk.resource.Card;
 
 import com.dewhi100.MagicCardClient;
+import com.dewhi100.util.CardUtil;
+import com.dewhi100.util.CollectionsUtil;
 
 public class Deck {
 
@@ -151,7 +153,7 @@ public class Deck {
 		Map<String, Integer> output = new HashMap<String, Integer>();
 
 		for (Card c : deck) {
-			MapUtil.add(output, c.getName());
+			CollectionsUtil.add(output, c.getName());
 		}
 
 		return output;

@@ -1,4 +1,4 @@
-package com.dewhi100;
+package com.dewhi100.util;
 
 import java.util.regex.Pattern;
 

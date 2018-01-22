@@ -3,6 +3,8 @@ package com.dewhi100.math;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dewhi100.util.CollectionsUtil;
+
 public class Math {
 
 	public static List<List<Integer>> getPossibilities(List<Integer> list) {
@@ -13,7 +15,7 @@ public class Math {
 			return output;
 		}
 		
-		List<Integer> smallerList = deepCopy(list);
+		List<Integer> smallerList = CollectionsUtil.deepCopyIntegers(list);
 		
 		while(!isOnes(smallerList)) {
 			output.add(smallerList);
@@ -28,7 +30,7 @@ public class Math {
 
 	private static List<Integer> decrement(List<Integer> list, List<Integer> maximums){
 		
-		List<Integer> output = deepCopy(list);
+		List<Integer> output = CollectionsUtil.deepCopyIntegers(list);
 		
 		int index = list.size() - 1;
 		
@@ -86,15 +88,5 @@ public class Math {
 		}
 		return output;
 	}*/
-
-	private static List<Integer> deepCopy(List<Integer> list) {
-		List<Integer> output = new ArrayList<Integer>();
-
-		for (Integer i : list) {
-			output.add(new Integer(i));
-		}
-
-		return output;
-	}
 
 }

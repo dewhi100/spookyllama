@@ -1,9 +1,9 @@
 package com.dewhi100;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
-import com.dewhi100.math.Math;
+import com.dewhi100.math.BinomialCoefficient;
+import com.dewhi100.math.HypergeometricMath;
 
 public class MainClass {
 
@@ -16,13 +16,11 @@ public class MainClass {
 //	            }
 //	        });
 	    	
-	    		List<Integer> list = new ArrayList<Integer>();
-	    		list.add(new Integer(2));
-	    		list.add(new Integer(3));
-	    		list.add(new Integer(2));
+	    	BinomialCoefficient bc1 = new BinomialCoefficient(4, 1); //successes
+	    	BinomialCoefficient bc3 = new BinomialCoefficient(4, 1); //another successes
+	    	BinomialCoefficient bc2= new BinomialCoefficient(60, 8); //population	    	
 	    	
-	    		List<List<Integer>> coolList = Math.getPossibilities(list);
-	    		coolList = coolList;
-	    		
+	    double d = HypergeometricMath.multivariateCumulativeProbability(bc2, Arrays.asList(bc1, bc3));
+	    	d = 0;
 	    }
 }

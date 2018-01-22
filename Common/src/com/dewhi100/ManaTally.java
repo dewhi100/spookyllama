@@ -128,6 +128,55 @@ public class ManaTally {
 		return mt;
 	}
 
+	// any card that lets you add mana to your pool.
+	public static ManaTally asManaLand(Card c) {
+		if(c == null) {
+			return null;
+		}
+		ManaTally mt = new ManaTally();
+		
+		List<String> types = Arrays.asList(c.getTypes());
+		if(types.contains("Land")) {
+			return mt;
+		}
+
+		String text = c.getText();
+		mt.setWhite(tapsFor("W", text) ? 1 : 0);
+		mt.setBlue(tapsFor("U", text) ? 1 : 0);
+		mt.setBlack(tapsFor("B", text) ? 1 : 0);
+		mt.setRed(tapsFor("R", text) ? 1 : 0);
+		mt.setGreen(tapsFor("G", text) ? 1 : 0);
+		mt.setColorless(tapsForColorless(text) ? 1 : 0);
+
+		// basic lands
+		switch (c.getName()) {
+		case "Plains":
+			mt.setWhite(1);
+			break;
+		case "Island":
+			mt.setBlue(1);
+			break;
+		case "Swamp":
+			mt.setBlack(1);
+			break;
+		case "Mountain":
+			mt.setRed(1);
+			break;
+		case "Forest":
+			mt.setGreen(1);
+			break;
+		}
+
+		if (mt.getWhite() > 0 || mt.getBlue() > 0 || mt.getBlack() > 0 || mt.getRed() > 0 || mt.getGreen() > 0
+				|| mt.getColorless() > 0) {
+			mt.setTotal(1);
+		} else {
+			mt.setTotal(0);
+		}
+
+		return mt;
+	}
+
 	public ManaTally add(ManaTally mt) {
 		setWhite(white + mt.getWhite());
 		setBlue(blue + mt.getBlue());
