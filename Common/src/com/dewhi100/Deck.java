@@ -130,7 +130,7 @@ public class Deck {
 	public int getQuantity(Card card) {
 		int output = 0;
 		for (Card c : deck) {
-			if (c.getName() == card.getName()) {
+			if (c.getName().equals(card.getName())) {
 				output++;
 			}
 		}

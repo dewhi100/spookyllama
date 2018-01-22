@@ -91,7 +91,11 @@ public class DeckAnalyst {
 
 		for(Entry<Card, Integer> e:wishes.entrySet()) {
 			//Number in deck, number you want.
-			BinomialCoefficient w = new BinomialCoefficient(deck.getQuantity(e.getKey()), e.getValue());
+			int numberInDeck = deck.getQuantity(e.getKey());
+			if(numberInDeck < 1) {
+				return 0.0;
+			}
+			BinomialCoefficient w = new BinomialCoefficient(numberInDeck, e.getValue());
 			wishCoefficients.add(w);
 		}
 		

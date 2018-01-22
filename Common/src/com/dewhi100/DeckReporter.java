@@ -1,6 +1,7 @@
 package com.dewhi100;
 
 import java.text.DecimalFormat;
+import java.util.regex.Pattern;
 
 public class DeckReporter {
 
@@ -93,8 +94,14 @@ public class DeckReporter {
 	}
 	
 	public static String reportOddsOfDrawing(String originalRequest, Double d) {
-		StringBuffer sb = new StringBuffer(originalRequest).append("\n");
-		sb.append("Odds: ").append(doubleToString(d)).append("\n");
+		StringBuffer sb = new StringBuffer();
+		String[] lines = originalRequest.split("\n");
+		for(String s:lines) {
+			if(!Pattern.matches("(Odds: .*)|(\\s*)", s)) {
+				sb.append(s).append("\n");
+			}
+		}
+		sb.append("\nOdds: ").append(doubleToString(d)).append("\n");
 		return sb.toString();
 	}
 	
@@ -105,8 +112,8 @@ public class DeckReporter {
 	}
 	
 	private static String doubleToString(Double percentage) {
-		DecimalFormat df = new DecimalFormat("#.##");
-		return df.format(percentage) + "%";		
+		DecimalFormat df = new DecimalFormat("#.######");
+		return df.format(percentage * 100.0) + "%";		
 	}
 	
 	private static String percent(int part, int whole) {

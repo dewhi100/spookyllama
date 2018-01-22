@@ -16,6 +16,9 @@ public class Display implements ActionListener {
 	JButton saveButton;
 	JTextArea analysisArea;
 	
+	private String previousDeckInput;
+	private String previousAnalysisInput;
+	
 	private Deck deck;
 	
 	public Display() {
@@ -38,7 +41,7 @@ public class Display implements ActionListener {
 				
 		//display analysis
 		analysisArea = new JTextArea(20, 30);
-        analysisArea.setEditable(false);
+//        analysisArea.setEditable(false);
 		mainFrame.add(analysisArea);
 		
         // get the screen size as a java dimension
@@ -60,40 +63,23 @@ public class Display implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		
-		deck = new Deck(deckListTextArea.getText());
-		
-		deckListTextArea.setText(deck.toString());
-		
-		String feedbackString = "";
-		
-		ManaTally sourceTotals = DeckAnalyst.calculateManaSourceCards(deck);
-		if(sourceTotals != null) {
-			feedbackString += DeckReporter.reportManaSources(sourceTotals);
-			feedbackString += "\n";
-//			sourcesTextArea.setText();
-		}else {
-//			sourcesTextArea.setText("");
+		String deckListInput = deckListTextArea.getText();
+
+		if(!deckListInput.equals(previousDeckInput) && !deckListInput.isEmpty()) {
+			deck = new Deck(deckListTextArea.getText());
+			deckListTextArea.setText(deck.toString());
+			previousDeckInput = deckListInput;
 		}
 
-		ManaTally devotion = DeckAnalyst.calculateDevotion(deck);
-		if(devotion != null) {
-			feedbackString += DeckReporter.reportDevotion(devotion);
-			feedbackString += "\n";
-//			devotionTextArea.setText();
-		}else {
-//			devotionTextArea.setText("");
-		}
+		String analysisInput = analysisArea.getText();
 		
-		ManaTally fetchLands = DeckAnalyst.calculateFetchLands(deck);
-		if(devotion != null) {
-			feedbackString += DeckReporter.reportFetchLands(fetchLands);
-			feedbackString += "\n";
-//			devotionTextArea.setText();
-		}else {
-//			devotionTextArea.setText("");
+		if(!analysisInput.equals(previousAnalysisInput) && !analysisInput.isEmpty()) {
+			WishList wl = Parser.parseWishList(analysisInput);
+			Double chance = DeckAnalyst.oddsOfDrawing(wl.getWishes(), wl.getTurn(), deck);
+			analysisArea.setText(DeckReporter.reportOddsOfDrawing(analysisInput, chance));
+			previousAnalysisInput = analysisInput;
 		}
-		analysisArea.setText(feedbackString);
-		
+				
 }
 
 	 
