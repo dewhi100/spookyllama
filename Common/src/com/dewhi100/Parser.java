@@ -16,9 +16,14 @@ public class Parser {
 		
 		for(String s:lines) {
 			int turn = parseTurn(s);
-			if(turn != 0) {
+			if(turn > 0) {
 				return new WishList(wishes, turn + 6);
 			}
+			turn = parseDraw(s);
+			if(turn > 0) {
+				return new WishList(wishes, turn);
+			}
+			
 			wishes.put(parseCard(s), parseQuantity(s));
 		}
 		
@@ -27,6 +32,14 @@ public class Parser {
 
 	private static int parseTurn(String input) {
 		if(Pattern.matches("(T|t)urn \\d+.*", input)) {
+			String numberString = input.replaceAll("\\D", "");
+			return Integer.parseInt(numberString);
+		}
+		return 0;
+	}
+	
+	private static int parseDraw(String input) {
+		if(Pattern.matches("(D|d)raw \\d+.*", input)) {
 			String numberString = input.replaceAll("\\D", "");
 			return Integer.parseInt(numberString);
 		}
